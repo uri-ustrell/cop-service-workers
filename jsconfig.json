@@ -1,0 +1,20 @@
+//@ts-nocheck
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./",
+    "checkJs": true,
+    "jsx": "react-jsx",
+    "module": "ES2020",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "target": "es6",
+    "paths": {
+      "components/*": ["src/components/*"],
+      "context/*": ["src/context/*"],
+      "hooks/*": ["src/hooks/*"],
+      "utils/*": ["src/utils/*"]
+    }
+  },
+  "exclude": ["./node_modules/*", "./.vscode/*", "./.yarn/*"]
+}

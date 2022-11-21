@@ -1,21 +1,38 @@
 const path = require("path");
+const fs = require("fs");
+
+const SW_LOCATION = "./src/service-workers/";
+
+const serviceWorkersEntrys = () => {
+  let swFiles = fs.readdirSync(SW_LOCATION);
+
+  return swFiles.reduce(
+    (entries, file) => ({
+      ...entries,
+      [file.split(".")[0]]: `${SW_LOCATION}${file}`,
+    }),
+    {}
+  );
+};
 
 module.exports = (env, argv) => {
   const isDevelopment = (argv && argv.mode) === "development";
   return [
     {
-      entry: `./src/index.jsx`,
+      entry: { main: `./src/index.jsx`, ...serviceWorkersEntrys() },
       output: {
         path: path.join(__dirname, "public"),
         publicPath: "auto",
-        filename: "main.js",
+        filename: "[name].js",
       },
       devServer: {
         static: "./public",
         allowedHosts: "all",
         historyApiFallback: true,
+        port: 3030,
         client: {
           overlay: false,
+          logging: "none",
         },
       },
       devtool: isDevelopment ? "source-map" : false,
@@ -23,6 +40,7 @@ module.exports = (env, argv) => {
         alias: {
           components: path.resolve(__dirname, "src/components/"),
           hooks: path.resolve(__dirname, "src/hooks/"),
+          utils: path.resolve(__dirname, "src/utils/"),
         },
         extensions: ["", ".js", ".jsx"],
       },
